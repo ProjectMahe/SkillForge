@@ -11,6 +11,8 @@ A Smart, Interactive Portfolio + Mini Games  + Study Tools + Resume Viewer in On
 
 ---
 
+Video https://youtube.com/shorts/jASpSA0pQFw?si=lJ1Iy4cgwTDAFSmm
+
 ## 📁 Project Structure
 
 ```bash
