@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Games | Vanilla JS Project</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Inline CSS specific to this page */
+    .game-container {
+      max-width: 400px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background-color: #f0f0f0;
+      font-size: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .cell:hover {
+      background-color: #d0ffd0;
+    }
+
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>🕹️ Games</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="resume.html">Resume</a>
+      <a href="study.html">Study</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Game Section -->
+  <main class="game-container">
+    <h2>Tic Tac Toe</h2>
+    <div class="board" id="board">
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+    </div>
+    <div class="result" id="result"></div>
+    <button onclick="resetGame()">Reset</button>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 My Vanilla JS Project</p>
+  </footer>
+
+  <!-- External JS -->
+  <script src="script.js"></script>
+
+  <!-- Inline JS for this page -->
+  <script>
+    const board = document.getElementById("board");
+    const cells = document.querySelectorAll(".cell");
+    const result = document.getElementById("result");
+
+    let currentPlayer = "X";
+    let gameState = ["", "", "", "", "", "", "", "", ""];
+    let isGameActive = true;
+
+    const winningCombos = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+
+    function handleCellClick(e) {
+      const index = e.target.dataset.index;
+
+      if (!isGameActive || gameState[index] !== "") return;
+
+      gameState[index] = currentPlayer;
+      e.target.textContent = currentPlayer;
+
+      if (checkWin()) {
+        result.textContent = `${currentPlayer} wins!`;
+        isGameActive = false;
+      } else if (!gameState.includes("")) {
+        result.textContent = "It's a draw!";
+        isGameActive = false;
+      } else {
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+      }
+    }
+
+    function checkWin() {
+      return winningCombos.some(combo => {
+        return combo.every(index => gameState[index] === currentPlayer);
+      });
+    }
+
+    function resetGame() {
+      gameState = ["", "", "", "", "", "", "", "", ""];
+      isGameActive = true;
+      currentPlayer = "X";
+      cells.forEach(cell => cell.textContent = "");
+      result.textContent = "";
+    }
+
+    cells.forEach(cell => {
+      cell.addEventListener("click", handleCellClick);
+    });
+  </script>
+
+</body>
+</html>
