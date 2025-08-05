@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Study Tools</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7faff;
+      color: #333;
+    }
+    header, footer {
+      background-color: #1e90ff;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    nav a {
+      margin: 0 10px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    section {
+      padding: 20px;
+    }
+    h2 {
+      color: #1e90ff;
+    }
+    .tool {
+      margin-bottom: 30px;
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #fff;
+    }
+    input[type="text"] {
+      padding: 6px;
+      width: 80%;
+      margin-right: 10px;
+    }
+    button {
+      padding: 6px 12px;
+      background: #1e90ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .flashcard {
+      background: #ffecb3;
+      padding: 10px;
+      border-radius: 8px;
+      margin: 5px 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Study Tools</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="resume.html">Resume</a>
+      <a href="games.html">Games</a>
+      <a href="study.html">Study</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="tool" id="todo">
+    <h2>📝 To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="Add a new task" />
+    <button onclick="addTask()">Add</button>
+    <ul id="taskList"></ul>
+  </section>
+
+  <section class="tool" id="timer">
+    <h2>⏱️ Pomodoro Timer</h2>
+    <p id="timerDisplay">25:00</p>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+  </section>
+
+  <section class="tool" id="flashcards">
+    <h2>🧠 Flashcards</h2>
+    <div class="flashcard" onclick="toggleAnswer(this)">Q: Capital of France?</div>
+    <div class="flashcard" onclick="toggleAnswer(this)">Q: 2 + 2?</div>
+    <div class="flashcard" onclick="toggleAnswer(this)">Q: HTML stands for?</div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Mentorix | Smart Learning Tracker</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Inline JS logic
+    let taskList = document.getElementById("taskList");
+    function addTask() {
+      const taskInput = document.getElementById("taskInput");
+      if (taskInput.value.trim() !== "") {
+        const li = document.createElement("li");
+        li.textContent = taskInput.value;
+        li.onclick = () => li.remove(); // Click to delete
+        taskList.appendChild(li);
+        taskInput.value = "";
+      }
+    }
+
+    // Pomodoro Timer
+    let timer;
+    let timeLeft = 1500; // 25 minutes
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          alert("Time's up!");
+        } else {
+          timeLeft--;
+          updateDisplay();
+        }
+      }, 1000);
+    }
+    function resetTimer() {
+      clearInterval(timer);
+      timeLeft = 1500;
+      updateDisplay();
+    }
+    function updateDisplay() {
+      const min = Math.floor(timeLeft / 60);
+      const sec = timeLeft % 60;
+      document.getElementById("timerDisplay").textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    }
+    updateDisplay();
+
+    // Flashcards
+    function toggleAnswer(card) {
+      if (card.textContent.startsWith("Q:")) {
+        card.textContent = card.textContent.replace("Q:", "A:");
+        if (card.textContent.includes("France")) card.textContent = "A: Paris";
+        else if (card.textContent.includes("2 + 2")) card.textContent = "A: 4";
+        else if (card.textContent.includes("HTML")) card.textContent = "A: HyperText Markup Language";
+      } else {
+        card.textContent = card.textContent.replace("A:", "Q:");
+        if (card.textContent.includes("Paris")) card.textContent = "Q: Capital of France?";
+        else if (card.textContent.includes("4")) card.textContent = "Q: 2 + 2?";
+        else if (card.textContent.includes("HyperText")) card.textContent = "Q: HTML stands for?";
+      }
+    }
+  </script>
+</body>
+</html>
